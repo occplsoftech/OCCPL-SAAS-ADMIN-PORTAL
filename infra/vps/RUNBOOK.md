@@ -301,6 +301,18 @@ the production deploy. Outgoing email is real (the same SMTP mailbox): use test 
        `FILES_AWS_ACCESS_KEY_ID=...` and `FILES_AWS_SECRET_ACCESS_KEY=...` (leave both out when the instance role has the policy).
        Then `docker compose up -d core-platform`.
     4. Check: open a company, Profile, upload a logo; it should appear. A signed link stops working after an hour, so reload the page to get a new one.
+12b. **File uploads in the courier app (dev).** Without this, the courier answers "File upload is not available: no storage backend is
+    configured" for wallet top-up proofs, proof-of-delivery photos and e-way bills.
+    1. A private bucket (the same `occpl-dev-files` works) and an IAM user with this policy (the portal's own policy covers only `companies/*`):
+       ```json
+       {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:PutObject","s3:GetObject"],
+         "Resource":"arn:aws:s3:::occpl-dev-files/*"}]}
+       ```
+    2. In `/opt/occpl/.env`: `COURIER_FILES_S3_ENABLED=true`, `COURIER_FILES_S3_BUCKET=occpl-dev-files`, `COURIER_FILES_S3_REGION=ap-south-1`,
+       `COURIER_FILES_AWS_ACCESS_KEY_ID=...`, `COURIER_FILES_AWS_SECRET_ACCESS_KEY=...` (leave both keys out when the instance role has the policy).
+    3. `cd /opt/occpl && docker compose up -d courier-backend`, then `docker compose logs courier-backend | grep -i "S3 file storage"`.
+    4. Check: in the e-commerce wallet raise a manual recharge with a proof image; it should upload.
+
 13. **Sign in with OCCPL for the courier app (dev).** People open Courier from the portal and arrive signed in. Needs steps 10 and 11 first.
     1. *Keycloak*, two clients (admin console, realm `occpl`, or `kcadm`):
        - `courier-web`: **public** client (no secret), *Standard flow* on, *PKCE method* `S256`, valid redirect URI
