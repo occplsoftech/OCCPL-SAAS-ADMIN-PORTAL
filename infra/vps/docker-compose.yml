@@ -212,6 +212,14 @@ services:
       APP_BASE_URL: https://${COURIER_HOST:-courier.localhost}
       # Where activation and password-reset links for customer-portal accounts point.
       CUSTOMER_PORTAL_BASE_URL: https://${PORTAL_HOST:-portal.localhost}
+      # Uploaded files (wallet top-up proof images, proof-of-delivery photos, e-way bills): a private S3 bucket.
+      # Off until COURIER_FILES_S3_ENABLED=true and a bucket are set; until then uploads answer "no storage backend is configured".
+      # Blank keys = the instance role (if it has the policy). See infra/vps/RUNBOOK.md, section 9.
+      AWS_S3_ENABLED: ${COURIER_FILES_S3_ENABLED:-false}
+      AWS_S3_BUCKET: ${COURIER_FILES_S3_BUCKET:-}
+      AWS_REGION: ${COURIER_FILES_S3_REGION:-ap-south-1}
+      AWS_ACCESS_KEY_ID: ${COURIER_FILES_AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${COURIER_FILES_AWS_SECRET_ACCESS_KEY:-}
       # Customer portal couriers. Blank = shown as "not connected"; the provider's API credentials never go in the image.
       SHIPROCKET_ENABLED: ${SHIPROCKET_ENABLED:-false}
       SHIPROCKET_API_EMAIL: ${SHIPROCKET_API_EMAIL:-}
