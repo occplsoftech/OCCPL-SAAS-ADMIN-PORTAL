@@ -7,7 +7,7 @@ COPY . .
 RUN npx ng build --configuration production
 
 # Unprivileged Nginx (listens on 8080, runs as uid 101).
-FROM nginxinc/nginx-unprivileged:1.30-alpine
+FROM nginxinc/nginx-unprivileged:1.31-alpine
 COPY docker/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY docker/40-runtime-config.sh /docker-entrypoint.d/40-runtime-config.sh
 COPY --from=build /workspace/dist/admin-portal/browser /usr/share/nginx/html
