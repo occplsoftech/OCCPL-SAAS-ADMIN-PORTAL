@@ -24,7 +24,7 @@
         <tomcat.version>11.0.27</tomcat.version>
         <jackson-bom.version>3.1.7</jackson-bom.version>
         <jackson-2-bom.version>2.21.7</jackson-2-bom.version>
-        <spring-modulith.version>2.1.1</spring-modulith.version>
+        <spring-modulith.version>2.1.2</spring-modulith.version>
         <springdoc.version>3.1.1</springdoc.version>
         <bucket4j.version>8.21.0</bucket4j.version>
         <json-schema-validator.version>3.0.8</json-schema-validator.version>
